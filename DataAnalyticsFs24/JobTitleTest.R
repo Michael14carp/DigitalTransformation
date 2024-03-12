@@ -31,8 +31,6 @@ print(location_counts_df)
 print(firm_counts_df)
 
 
-
-
 # check how many NA's in whole dataset
 
 sum(is.na(DatenGlassdoor))
@@ -83,3 +81,6 @@ job_title_non_empty <- data.frame(Job_Title = names(job_title_non_empty), Count 
 
 # add country column
 
+
+# Nur Personen, die Software Engineer im job_title haben
+jobTitleSoftwareEngineer=DatenGlassdoor$job_title("Software Engineer")
