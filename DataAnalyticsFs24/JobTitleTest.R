@@ -83,4 +83,8 @@ job_title_non_empty <- data.frame(Job_Title = names(job_title_non_empty), Count 
 
 
 # Nur Personen, die Software Engineer im job_title haben
-jobTitleSoftwareEngineer=DatenGlassdoor$job_title("Software Engineer")
+# Filtere den Datensatz nach Personen mit "Software Engineer" im Jobtitel
+SoftwareEngineerData <- DatenGlassdoor[grep("Software Engineer", DatenGlassdoor$job_title), ]
+
+# Überprüfe den neuen Datensatz
+
