@@ -1,6 +1,13 @@
 DatenGlassdoor <- read.csv("/Users/joyackermann/Documents/Universität/Universität Basel (MSc)/Data Analytics/War for Talents/glassdoor_reviews.csv")
 DatenGlassdoor <- read.csv("C:/Users/nussb/OneDrive - Universität Basel/FS24/data science/glassdoor_reviews.csv")
 
+# Filtere den Datensatz nach Personen mit "Software Engineer" im Jobtitel
+SoftwareEngineerData <- DatenGlassdoor[grep("Software Engineer", DatenGlassdoor$job_title), ]
+# Setze den ursprünglichen Datensatz ohne Software Engineers
+RestlicheJobsData <- subset(DatenGlassdoor, !(job_title %in% SoftwareEngineerData$job_title))
+# Filtere den Datensatz nach Personen mit "Manager" im Jobtitel
+ManagerData <- DatenGlassdoor[grep("Manager", DatenGlassdoor$job_title), ]
+
 
 str(DatenGlassdoor)
 
@@ -82,9 +89,5 @@ job_title_non_empty <- data.frame(Job_Title = names(job_title_non_empty), Count 
 # add country column
 
 
-# Nur Personen, die Software Engineer im job_title haben
-# Filtere den Datensatz nach Personen mit "Software Engineer" im Jobtitel
-SoftwareEngineerData <- DatenGlassdoor[grep("Software Engineer", DatenGlassdoor$job_title), ]
 
-# Überprüfe den neuen Datensatz
 
