@@ -3,11 +3,37 @@ DatenGlassdoor <- read.csv("C:/Users/nussb/OneDrive - Universität Basel/FS24/da
 
 # Filtere den Datensatz nach Personen mit "Software Engineer" im Jobtitel
 SoftwareEngineerData <- DatenGlassdoor[grep("Software Engineer", DatenGlassdoor$job_title), ]
-# Setze den ursprünglichen Datensatz ohne Software Engineers
-RestlicheJobsData <- subset(DatenGlassdoor, !(job_title %in% SoftwareEngineerData$job_title))
 # Filtere den Datensatz nach Personen mit "Manager" im Jobtitel
 ManagerData <- DatenGlassdoor[grep("Manager", DatenGlassdoor$job_title), ]
+# Setze den ursprünglichen Datensatz ohne Software Engineers; Hier müssen noch anonymus und fehlen job title entfernt werden?
+RestlicheJobsData <- subset(DatenGlassdoor, !(job_title %in% SoftwareEngineerData$job_title))
 
+
+#  Branchen
+FinanceData=DatenGlassdoor[grep("J-P-Morgan|Citi|HSBC-Holdings|Barclays|Thomson-Reuters|American-Express|Morgan-Stanley|Goldman-Sachs|BNY-Mellon|Deutsche-Bank|", DatenGlassdoor$firm), ]
+TechData=DatenGlassdoor[grep("IBM|Oracle|Microsoft|Apple|Google|SAP|Salesforce", DatenGlassdoor$firm), ]
+ConsultingData=DatenGlassdoor[grep("Deloitte|EY|PwC|KPMG", DatenGlassdoor$firm), ]
+FoodData=DatenGlassdoor[grep("McDonald-s|Pizza-Hut|Tesco", DatenGlassdoor$firm), ]
+
+# Funktion zur Anzeige der Anzahl der Fälle in jedem Dataset
+library(dplyr)
+count_cases <- function(data, name) {
+  num_cases <- nrow(data)
+  dataset_info <- data.frame(Dataset = name, NumCases = num_cases)
+  return(dataset_info)
+}
+
+# Anzahl der Fälle in jedem Dataset anzeigen und nach Größe ordnen
+case_counts <- bind_rows(
+  count_cases(TechData, "TechData"),
+  count_cases(FoodData, "FoodData"),
+  count_cases(ConsultingData, "ConsultingData"),
+  count_cases(FinanceData, "FinanceData")
+) %>%
+  arrange(desc(NumCases))
+
+# Ausgabe der Anzahl der Fälle in jedem Dataset, geordnet nach Größe
+print(case_counts)
 
 str(DatenGlassdoor)
 
