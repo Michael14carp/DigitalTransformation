@@ -5,15 +5,15 @@ DatenGlassdoor <- read.csv("C:/Users/nussb/OneDrive - Universität Basel/FS24/da
 SoftwareEngineerData <- DatenGlassdoor[grep("Software Engineer", DatenGlassdoor$job_title), ]
 # Filtere den Datensatz nach Personen mit "Manager" im Jobtitel
 ManagerData <- DatenGlassdoor[grep("Manager", DatenGlassdoor$job_title), ]
-# Setze den ursprünglichen Datensatz ohne Software Engineers; Hier müssen noch anonymus und fehlen job title entfernt werden?
+# Setze den ursprünglichen Datensatz ohne Software Engineers; Hier müssen noch anonymus und fehlende job title entfernt werden?
 RestlicheJobsData <- subset(DatenGlassdoor, !(job_title %in% SoftwareEngineerData$job_title))
 
 
 #  Branchen
-FinanceData=DatenGlassdoor[grep("J-P-Morgan|Citi|HSBC-Holdings|Barclays|Thomson-Reuters|American-Express|Morgan-Stanley|Goldman-Sachs|BNY-Mellon|Deutsche-Bank|", DatenGlassdoor$firm), ]
-TechData=DatenGlassdoor[grep("IBM|Oracle|Microsoft|Apple|Google|SAP|Salesforce", DatenGlassdoor$firm), ]
-ConsultingData=DatenGlassdoor[grep("Deloitte|EY|PwC|KPMG", DatenGlassdoor$firm), ]
-FoodData=DatenGlassdoor[grep("McDonald-s|Pizza-Hut|Tesco", DatenGlassdoor$firm), ]
+FinanceData = DatenGlassdoor[grep("J-P-Morgan|Citi|HSBC-Holdings|Barclays|Thomson-Reuters|American-Express|Morgan-Stanley|Goldman-Sachs|BNY-Mellon|Deutsche-Bank|", DatenGlassdoor$firm), ]
+TechData = DatenGlassdoor[grep("IBM|Oracle|Microsoft|Apple|Google|SAP|Salesforce", DatenGlassdoor$firm), ]
+ConsultingData = DatenGlassdoor[grep("Deloitte|EY|PwC|KPMG", DatenGlassdoor$firm), ]
+FoodData = DatenGlassdoor[grep("McDonald-s|Pizza-Hut|Tesco", DatenGlassdoor$firm), ]
 
 # Funktion zur Anzeige der Anzahl der Fälle in jedem Dataset
 library(dplyr)
@@ -110,9 +110,19 @@ CleanDataGlassdoor <- DataGlassdoor[rowSums(DataGlassdoor == "") == 0, ]
 DataGlassdoor_1 <- CleanDataGlassdoor[-c(585759, 707520, 767175),]
 
 job_title_non_empty <- table(FullDataGlassdoor$job_title)
-job_title_non_empty <- data.frame(Job_Title = names(job_title_non_empty), Count = as.numeric(job_title_non_empty))
+job_title_non_empty <- data.frame(Job_Title = names(job_title_non_empty), 
+                                  Count = as.numeric(job_title_non_empty))
 
 # add country column
+install.packages("ggmap")
+library(ggmap)
+library(dplyr)  # for data manipulation
+
+# Geocode locations and extract country information
+register_google(key = "AIzaSyAU9mANCBK3lyFkyWmYoWA4Uaw5MhBJY9k")
+CountriesDataGlassdoor <- CleanDataGlassdoor %>%
+  mutate(geo_info = geocode(paste(location, sep = ", ")),
+         country = sapply(geo_info, function(x) x$country))
 
 
 
