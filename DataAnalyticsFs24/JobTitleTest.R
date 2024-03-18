@@ -11,8 +11,39 @@ DatenGlassdoor <- read.csv("C:/Users/nussb/OneDrive - Universität Basel/FS24/da
 SoftwareEngineerData <- DatenGlassdoor[grep("Software Engineer", DatenGlassdoor$job_title), ]
 # Filtere den Datensatz nach Personen mit "Manager" im Jobtitel
 ManagerData <- DatenGlassdoor[grep("Manager", DatenGlassdoor$job_title), ]
+ConsultantData <- DatenGlassdoor[grep("Consultant", DatenGlassdoor$job_title), ]
+AssociateData <- DatenGlassdoor[grep("Consultant", DatenGlassdoor$job_title), ]
 # Setze den ursprünglichen Datensatz ohne Software Engineers; Hier müssen noch anonymus und fehlende job title entfernt werden? 
 RestlicheJobsData <- subset(DatenGlassdoor, !(job_title %in% SoftwareEngineerData$job_title))
+
+# Variablen definieren
+variables <- c("overall_rating", "work_life_balance", "culture_values", 
+               "diversity_inclusion", "career_opp", "comp_benefits")
+
+# Funktion zur Berechnung der deskriptiven Statistiken für eine Variable
+calculate_stats <- function(data, variable) {
+  mean_value <- mean(data[[variable]], na.rm = TRUE)
+  sd_value <- sd(data[[variable]], na.rm = TRUE)
+  return(c(Avg = mean_value, SD = sd_value))
+}
+
+# Deskriptive Statistiken für jedes Datenset und jede Variable berechnen
+software_engineer_stats <- sapply(variables, function(variable) calculate_stats(SoftwareEngineerData, variable))
+manager_stats <- sapply(variables, function(variable) calculate_stats(ManagerData, variable))
+consultant_stats <- sapply(variables, function(variable) calculate_stats(ConsultantData, variable))
+associate_stats <- sapply(variables, function(variable) calculate_stats(AssociateData, variable))
+rest_stats <- sapply(variables, function(variable) calculate_stats(RestlicheJobsData, variable))
+
+# Ergebnisse in einer Tabelle zusammenfassen
+summary_table <- data.frame(SoftwareEngineer = software_engineer_stats,
+                            Manager = manager_stats,
+                            Consultant = consultant_stats,
+                            Associate = associate_stats,
+                            RestlicheJobs = rest_stats,
+                            row.names = c("Avg", "SD"))
+
+# Ergebnisse ausgeben
+print(summary_table)
 
 
 #  Branchen
@@ -21,6 +52,35 @@ TechData=DatenGlassdoor[grep("IBM|Oracle|Microsoft|Apple|Google|SAP|Salesforce",
 ConsultingData=DatenGlassdoor[grep("Deloitte|EY|PwC|KPMG", DatenGlassdoor$firm), ]
 FoodData=DatenGlassdoor[grep("McDonald-s|Pizza-Hut", DatenGlassdoor$firm), ]
 # Subway, Burger Kind, Dominos
+
+# Funktion zur Berechnung der deskriptiven Statistiken für eine Variable und ein Datenset
+calculate_stats <- function(data, variable) {
+  mean_value <- mean(data[[variable]], na.rm = TRUE)
+  sd_value <- sd(data[[variable]], na.rm = TRUE)
+  return(c(Avg = mean_value, SD = sd_value))
+}
+
+# Variablen definieren
+variables <- c("overall_rating", "work_life_balance", "culture_values", 
+               "diversity_inclusion", "career_opp", "comp_benefits")
+
+# Deskriptive Statistiken für jede Branche und jede Variable berechnen
+finance_stats <- sapply(variables, function(variable) calculate_stats(FinanceData, variable))
+tech_stats <- sapply(variables, function(variable) calculate_stats(TechData, variable))
+consulting_stats <- sapply(variables, function(variable) calculate_stats(ConsultingData, variable))
+food_stats <- sapply(variables, function(variable) calculate_stats(FoodData, variable))
+
+# Ergebnisse in einer Tabelle zusammenfassen
+summary_table <- data.frame(Finance = finance_stats,
+                            Tech = tech_stats,
+                            Consulting = consulting_stats,
+                            Food = food_stats,
+                            row.names = c("Avg", "SD"))
+
+# Ergebnisse ausgeben
+print(summary_table)
+
+
 
 # Funktion zur Anzeige der Anzahl der Fälle in jedem Dataset
 library(dplyr)
