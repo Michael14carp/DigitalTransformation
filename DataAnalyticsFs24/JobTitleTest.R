@@ -1,5 +1,6 @@
 DatenGlassdoor <- read.csv("/Users/joyackermann/Documents/Universität/Universität Basel (MSc)/Data Analytics/War for Talents/glassdoor_reviews.csv")
 DatenGlassdoor <- read.csv("C:/Users/nussb/OneDrive - Universität Basel/FS24/data science/glassdoor_reviews.csv")
+glassdoor_review <- read.csv(".../glassdoor_review.csv")
 
 # Filtere den Datensatz nach Personen mit "Software Engineer" im Jobtitel
 SoftwareEngineerData <- DatenGlassdoor[grep("Software Engineer", DatenGlassdoor$job_title), ]
@@ -126,4 +127,4 @@ CountriesDataGlassdoor <- CleanDataGlassdoor %>%
 
 
 
-
+DataGlassdoor$coutry <- str_extract(DataGlassdoor, location, ",")
